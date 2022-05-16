@@ -21,7 +21,7 @@ if __name__ == '__main__':
     g = Game()
     img = pygame.image.load('source/img4.jpg')
     change_w, change_h = 0.95, 1
-    background = pygame.transform.scale(img, g.scale_background)
+    background = pygame.transform.scale(img, g.background_scale)
 
     while True:
         g.screen.blit(background, ( g.start_point[0],  g.start_point[1]))
@@ -43,10 +43,10 @@ if __name__ == '__main__':
                     g.level = 1
                     g.get_wight_hight()
                     print("center = {}".format((g.screen.get_width()*0.50390625, g.screen.get_height()*0.39027777777)))
-                    background = pygame.transform.scale(img,g.scale_background)
+                    background = pygame.transform.scale(img, g.background_scale)
                 if event.key == pygame.K_2:
                     print("center = {}".format((g.screen.get_width()*0.50390625, g.screen.get_height()*0.39027777777)))
-                    background = pygame.transform.scale(img,g.scale_background)
+                    background = pygame.transform.scale(img, g.background_scale)
                 if event.key == pygame.K_z:
                     print("click {}".format(pygame.mouse.get_pos()))
                     change_w *= 1.075
