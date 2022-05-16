@@ -16,47 +16,60 @@ from game import Game
 # screen = pygame.display.set_mode(SIZE, depth=32, flags=pygame.RESIZABLE)
 
 if __name__ == '__main__':
-    pygame.init()
+    # pygame.init()
     clock = time.time()
     g = Game()
-    img = pygame.image.load('source/img4.jpg')
-    change_w, change_h = 0.95, 1
-    background = pygame.transform.scale(img, g.scale_background)
+    # img = pygame.image.load('source/img4.jpg')
+    # change_w, change_h = 0.95, 1
+    # background = pygame.transform.scale(img, g.scale_background)
+    # g.screen.blit(background, (g.start_point[0], g.start_point[1]))
+    # g.draw_ball()
 
     while True:
-        g.screen.blit(background, ( g.start_point[0],  g.start_point[1]))
+        g.update_ball_pos()
+        g.draw_all()
+        # g.pos_ball.y -= 0.03
+        # if g.scale_ball.x > 0:
+        #     g.scale_ball.x -= 0.03
+        #     g.scale_ball.y -= 0.03
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
+                g.pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print("click {}".format(pygame.mouse.get_pos()))
             if event.type == pygame.VIDEORESIZE:
-                background = pygame.transform.scale(img, (g.screen.get_width(), g.screen.get_height()))
+                g.update_screen_size()
+                # background = pygame.transform.scale(g.imgBackground, (g.screen.get_width(), g.screen.get_height()))
+                # g.screen.blit(background, (g.start_point.x, g.start_point.y))
+                # g.draw_ball()
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
                 if event.key == pygame.K_p:
-                    print("width = {} -- hight = {}".format(g.screen.get_width(), g.screen.get_height()))
+                    print("start throw")
+                    g.set_throw_type()
                 if event.key == pygame.K_1:
-                    g.level = 1
-                    g.get_wight_hight()
-                    print("center = {}".format((g.screen.get_width()*0.50390625, g.screen.get_height()*0.39027777777)))
-                    background = pygame.transform.scale(img,g.scale_background)
-                if event.key == pygame.K_2:
-                    print("center = {}".format((g.screen.get_width()*0.50390625, g.screen.get_height()*0.39027777777)))
-                    background = pygame.transform.scale(img,g.scale_background)
-                if event.key == pygame.K_z:
-                    print("click {}".format(pygame.mouse.get_pos()))
-                    change_w *= 1.075
-                    change_h *= 1.05
+                    g.update_level_and_scale_accordingly(1)
+                    # print("center = {}".format((g.screen.get_width()*0.50390625, g.screen.get_height()*0.39027777777)))
+                    # background = pygame.transform.scale(img,g.scale_background)
+                if event.key == pygame.K_0:
+                    g.update_level_and_scale_accordingly(0)
+                if event.key == pygame.K_b:
+                    print("b")
+                    g.draw_ball()
+                # if event.key == pygame.K_z:
+                #     print("click {}".format(pygame.mouse.get_pos()))
+                    # change_w *= 1.075
+                    # change_h *= 1.05
                     # if change_w > 2.3:
                     #     continue
-                    g.start_point[0] =  g.start_point[0] - 19
-                    g.start_point[1] =  g.start_point[1] - 8
-                    background = pygame.transform.scale(img,(g.screen.get_width() * change_w, g.screen.get_height() * change_w))
-                    print(change_w)
-                    print(change_w)
+                    # g.start_point[0] =  g.start_point[0] - 19
+                    # g.start_point[1] =  g.start_point[1] - 8
+                    # g.background = pygame.transform.scale(g.imgBackground,(g.screen.get_width() * change_w, g.screen.get_height() * change_w))
+                    # print(change_w)
+                    # print(change_w)
 
         pygame.display.update()
