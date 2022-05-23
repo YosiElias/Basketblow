@@ -26,7 +26,7 @@ if __name__ == '__main__':
     # g.draw_ball()
 
     while True:
-        g.update_ball_pos()
+        g.ball.update_ball_pos()
         g.draw_all()
         # g.pos_ball.y -= 0.03
         # if g.scale_ball.x > 0:
