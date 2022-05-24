@@ -11,26 +11,29 @@ import time
 import math
 import tkinter as tk
 import threading
+from basketball_FRVR import main_loop_frvr
 
 
 
 from game import Game
 
 
-def convert_blow(blow):
-    if 102000 < blow < 103000:
-        blow = 0
-    elif 103000 < blow < 104000:
-        blow = 1
-    elif 104000 < blow < 104500:
-        blow = 2
-    elif 104500 < blow < 105000:
-        blow = 3
-    elif 105000 < blow:
-        blow = 4
-    else:
-        blow = -1
-    return blow
+# def convert_blow(blow):
+#     if 102000 < blow < 103000:
+#         blow = 0
+#     elif 103000 < blow < 104000:
+#         blow = 1
+#     elif 104000 < blow < 104500:
+#         blow = 2
+#     elif 104500 < blow < 105000:
+#         blow = 3
+#     elif 105000 < blow:
+#         blow = 4
+#     else:
+#         blow = -1
+#     return blow
+
+
 
 try:
     import serial
@@ -40,10 +43,18 @@ except:
 
     pip.main(['install', 'serial'])
 
-PORT_NUMBER = 'COM7'  # TODO change according to port number
-BAUDRATE = 9600
+# PORT_NUMBER = 'COM7'  # TODO change according to port number
+# BAUDRATE = 9600
 # arduino_data = serial.Serial(PORT_NUMBER, BAUDRATE)
 
+# def arduino_data_function():
+#     if arduino_data.in_waiting:
+#         packet = arduino_data.readline()
+#         blow = packet.decode('utf').rstrip('\n')
+#         print(blow)
+#         blow = convert_blow(int(blow))
+#         if blow != -1:
+#             return blow
 # arduino_data.open()
 # while True:
 #     if arduino_data.in_waiting:
@@ -84,7 +95,8 @@ def update_screen_size(background):
 
 
 def background_text():
-    label = tk.Label(text='Instead of the space button,  Blow!\nIf you want back to menu please click on \'esc\'',
+    # label = tk.Button()
+    label = tk.Label(text='Instead of the space button,  Blow!\nIf you want back to menu please close this window',
                      font=('Times', '30'), fg='black', bg='white')
     label.master.overrideredirect(True)
     label.master.geometry("+{}+{}".format(45, screen.get_height()-115))
@@ -97,6 +109,20 @@ def background_text():
 
 global th_background_text
 global th_control_key
+
+def deep_basketball():
+    # pygame.quit()
+    # Create a Thread with a function without any arguments:
+    th_background_text = threading.Thread(target=background_text)
+    # th_control_key = threading.Thread(target=main_key)
+    th_main_game = threading.Thread(target=main_loop_frvr)
+    # Start the threads:
+    th_background_text.start()
+    # th_control_key.start()
+    th_main_game.start()
+    print(th_control_key.is_alive())
+    print(th_background_text.is_alive())
+    # main_loop_frvr()
 
 def speed_runer():
     # pygame.quit()
@@ -113,6 +139,19 @@ def speed_runer():
     # background_text()
     # main_key()
 
+
+def speed_dinosaur():
+    # pygame.quit()
+    # Create a Thread with a function without any arguments:
+    th_background_text = threading.Thread(target=background_text)
+    th_control_key = threading.Thread(target=main_key)
+    # Start the threads:
+    th_background_text.start()
+    th_control_key.start()
+    print(th_control_key.is_alive())
+    print(th_background_text.is_alive())
+
+    webbrowser.open_new_tab("https://clickspeeder.com/dinosaur-game/")
 
 def main(test: bool = False) -> None:
     """
@@ -154,6 +193,8 @@ def main(test: bool = False) -> None:
 
     # Add widgets
     games_menu.add.button('Corona-runner -> Speed blow', speed_runer)
+    games_menu.add.button('Dinosaur-runner -> Speed blow', speed_dinosaur)
+    games_menu.add.button('Basketball -> Deep blow', deep_basketball)
     games_menu.add.button('Return to Menu', pygame_menu.events.BACK)
     games_menu.add.button('Close Menu', pygame_menu.events.CLOSE)
 
@@ -270,8 +311,6 @@ def main(test: bool = False) -> None:
                 # if event.key == pygame.K_4:
                 #     g.set_throw_type(4)
             # if arduino_data.in_waiting and not g.ball.throw:
-            #     x = my_ball.pos_ball.x
-            #     y = my_ball.pos_ball.y
             #     packet = arduino_data.readline()
             #     blow = packet.decode('utf').rstrip('\n')
             #     print(blow)
@@ -279,6 +318,7 @@ def main(test: bool = False) -> None:
             #     print(blow)
             #     if blow != -1:
             #         g.set_throw_type(blow)
+
 
         if main_menu.is_enabled():
             main_menu.draw(screen)
