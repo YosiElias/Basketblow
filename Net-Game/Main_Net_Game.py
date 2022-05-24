@@ -106,6 +106,8 @@ def speed_runer():
     # Start the threads:
     th_background_text.start()
     th_control_key.start()
+    print(th_control_key.is_alive())
+    print(th_background_text.is_alive())
 
     webbrowser.open_new_tab("https://clickspeeder.com/corona-runner/")
     # background_text()

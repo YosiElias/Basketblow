@@ -1,10 +1,24 @@
-import tkinter as tk
-label = tk.Label(text='Instead of the space button,  Blow!\nIf you want back to menu please click on \'esc\'', font=('Times','30'), fg='black', bg='white')
-label.master.overrideredirect(True)
-label.master.geometry("+{}+{}".format(150, 550))
-label.master.lift()
-label.master.wm_attributes("-topmost", True)
-label.master.wm_attributes("-disabled", True)
-label.master.wm_attributes("-transparentcolor", "white")
-label.pack()
-label.mainloop()
+# Imports
+import pygame
+import pygame as pg
+from ctypes import windll
+
+SetWindowPos = windll.user32.SetWindowPos
+
+pg.init()
+win = pg.display.set_mode((200, 30))
+
+x, y = 100, 100
+# Pin Window to the top
+SetWindowPos(pygame.display.get_wm_info()['window'], -1, x, y, 0, 0, 0x0001)
+
+
+#Main Loop
+run = True
+while run:
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
+            run = False
+            break
+        if event.type == pg.KEYDOWN:
+            SetWindowPos(pygame.display.get_wm_info()['window'], -1, x, y, 0, 0, 0x0001)

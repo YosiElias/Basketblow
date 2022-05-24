@@ -1,5 +1,6 @@
 import time
 
+import pyautogui
 from pynput import keyboard
 from pynput.keyboard import Key, Controller
 
@@ -22,6 +23,18 @@ def on_release(key):
     print('Key released: {0}'.format(
         key))
     if key == keyboard.Key.esc:
+        control.press(keyboard.Key.alt)
+        time.sleep(.2)
+        control.press(keyboard.Key.tab,2)
+        control.release(keyboard.Key.tab, 2)
+        time.sleep(.2)
+        control.release(keyboard.Key.alt)
+
+        # control.press(keyboard.Key.tab)
+
+        # control.release(keyboard.Key.tab)
+        # control.release(keyboard.Key.tab, 2)
+        # control.release(keyboard.Key.alt)
         # Stop listener
         return False
 def main_key():
