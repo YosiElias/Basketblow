@@ -125,18 +125,10 @@ def creat_menu():
     )
 
     # main_menu.add.button(games_menu.get_title(), games_menu)  # Add timer submenu
-    main_menu.add.selector('Difficulty: ', [('Hard', 1), ('Easy', 2)], onchange=set_difficulty)
+    main_menu.add.selector('Difficulty: ', [('Easy', 2),('Hard', 1)], onchange=set_difficulty)
     main_menu.add.button(help_menu.get_title(), help_menu)  # Add help submenu
     main_menu.add.button(about_menu.get_title(), about_menu)  # Add about submenu
     main_menu.add.button('Exit', pygame_menu.events.EXIT)  # Add exit function
-
-
-
-
-
-
-
-
 
 
 
@@ -146,13 +138,13 @@ def convert_blow(blow):
         if 102000 < blow < 103000:
             blow = 0
         elif 103000 < blow < 104000:
-            blow = 1
+            blow = 0#1
         elif 104000 < blow < 104500:
-            blow = 2
+            blow = 3#2
         elif 104500 < blow < 105000:
-            blow = 3
+            blow = 3#3
         elif 105000 < blow:
-            blow = 4
+            blow = 3#4
         else:
             blow = -1
         return blow
@@ -160,13 +152,13 @@ def convert_blow(blow):
         if 102000 < blow < 103000:
             blow = 0
         elif 103000 < blow < 104000:
-            blow = 1
+            blow = 3
         elif 104000 < blow < 104500:
-            blow = 2
+            blow = 3
         elif 104500 < blow < 105000:
             blow = 3
         elif 105000 < blow:
-            blow = 4
+            blow = 3
         else:
             blow = -1
         return blow
@@ -202,6 +194,7 @@ arduino_data = serial.Serial(PORT_NUMBER, BAUDRATE)    #Todo: #
 
 power = 0 # 59.047782557857325
 angle = 0 #  1.5707963267948966
+blow =-1
 # time = 0
 
 
@@ -266,15 +259,26 @@ if __name__ == '__main__':
                     g.set_throw_type(4)
 
         if arduino_data.in_waiting and not g.ball.throw:  #Todo: #
+            prev_blow = blow
             x = my_ball.pos_ball.x
             y = my_ball.pos_ball.y
+
             packet = arduino_data.readline()
             blow = packet.decode('utf').rstrip('\n')
             print(blow)
             blow = convert_blow(int(blow))
             print(blow)
+            if blow == prev_blow:
+                blow=-1
+                print(blow)
             if blow != -1:
                 g.set_throw_type(blow)
+        else:
+            blow=-1
+        if arduino_data.in_waiting and g.ball.throw:
+            packet = arduino_data.readline()
+        #     temp = packet.decode('utf').rstrip('\n')
+        # blow=-1
 
         if main_menu.is_enabled():
             main_menu.draw(g.screen)
